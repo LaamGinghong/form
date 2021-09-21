@@ -1,0 +1,51 @@
+{
+  "name": "form-hook",
+  "version": "0.0.0",
+  "description": "a react hook for form inspired by angular.",
+  "keywords": [
+    "react",
+    "hook",
+    "form"
+  ],
+  "homepage": "https://github.com/LaamGinghong/form-hook#readme",
+  "bugs": {
+    "url": "https://github.com/LaamGinghong/form-hook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaamGinghong/form-hook.git"
+  },
+  "license": "MIT",
+  "author": "https://github.com/LaamGinghong",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js, ts, tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-angular": "^13.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react": "^7.26.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
