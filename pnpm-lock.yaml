@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@commitlint/cli': ^13.1.0
   '@commitlint/config-angular': ^13.1.0
+  '@types/lodash-es': ^4.17.5
   '@types/react': ^17.0.22
   '@typescript-eslint/eslint-plugin': ^4.31.2
   '@typescript-eslint/parser': ^4.31.2
@@ -16,16 +17,19 @@ specifiers:
   eslint-plugin-react: ^7.26.0
   husky: ^7.0.2
   lint-staged: ^11.1.2
+  lodash-es: ^4.17.21
   prettier: ^2.4.1
   react: ^17.0.2
   typescript: ^4.4.3
 
 dependencies:
+  lodash-es: 4.17.21
   react: 17.0.2
 
 devDependencies:
   '@commitlint/cli': 13.1.0
   '@commitlint/config-angular': 13.1.0
+  '@types/lodash-es': 4.17.5
   '@types/react': 17.0.22
   '@typescript-eslint/eslint-plugin': 4.31.2_3815fab247b4312be6d1f55eb1f81298
   '@typescript-eslint/parser': 4.31.2_eslint@7.32.0+typescript@4.4.3
@@ -267,6 +271,16 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
+    dev: true
+
+  /@types/lodash-es/4.17.5:
+    resolution: {integrity: sha512-SHBoI8/0aoMQWAgUHMQ599VM6ZiSKg8sh/0cFqqlQQMyY9uEplc0ULU5yQNzcvdR4ZKa0ey8+vFmahuRbOCT1A==}
+    dependencies:
+      '@types/lodash': 4.14.173
+    dev: true
+
+  /@types/lodash/4.14.173:
+    resolution: {integrity: sha512-vv0CAYoaEjCw/mLy96GBTnRoZrSxkGE0BKzKimdR8P3OzrNYNvBgtW7p055A+E8C31vXNUhWKoFCbhq7gbyhFg==}
     dev: true
 
   /@types/minimist/1.2.2:
@@ -1720,6 +1734,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash.clonedeep/4.5.0:
     resolution: {integrity: sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=}

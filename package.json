@@ -30,6 +30,7 @@
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-angular": "^13.1.0",
+    "@types/lodash-es": "^4.17.5",
     "@types/react": "^17.0.22",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
@@ -50,6 +51,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "lodash-es": "^4.17.21",
     "react": "^17.0.2"
   }
 }
