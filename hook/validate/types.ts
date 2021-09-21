@@ -47,11 +47,11 @@ export type ValidateMessage = string | ValidateMessageFn
 // Function
 export type Validator = (
   value: any,
-  control: any, // TODO
+  control?: any, // TODO
 ) => ValidateErrors | undefined
 export type AsyncValidator = (
   value: any,
-  control: any, // TODO
+  control?: any, // TODO
 ) => Promise<ValidateErrors | undefined>
 export interface ValidatorOptions {
   validators?: Validator | Validator[]

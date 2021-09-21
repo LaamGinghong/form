@@ -4,9 +4,29 @@ import type {
   ValidateStatus,
   ValidateTrigger,
   Validator,
+  ValidatorOptions,
 } from '../../validate'
 
-export interface FormControl<T = any> {
+export interface FormControlParams<T> {
+  /**
+   * 校验器
+   *
+   * 可能是单个校验器，可能是数组，也可能是一个配置项
+   */
+  validatorOrOptions?: Validator | Validator[] | ValidatorOptions
+  /**
+   * 异步校验器
+   *
+   * 若 validatorOrOptions 为 **ValidatorOptions**，则会忽略这个值
+   */
+  asyncValidator?: AsyncValidator | AsyncValidator[]
+  /**
+   * 表单项的初始值
+   */
+  initialValue?: T | (() => T)
+}
+
+export interface FormControl<T> {
   /**
    * 当前表单项的值
    */
@@ -32,7 +52,7 @@ export interface FormControl<T = any> {
    */
   dirty: boolean
   /* 当前表单项是否被禁用 */
-  disabled: boolean
+  // TODO disabled: boolean
   /* 当前表单项的父表单 */
   // TODO parent: AbstractControl | undefined
   /**
@@ -61,7 +81,7 @@ export interface FormControl<T = any> {
    *
    * 不会引起 dirty 的修改
    */
-  setValue: (value: T, options?: { dirty?: boolean }) => void
+  setValue: (value: T | undefined, options?: { dirty?: boolean }) => void
   /**
    * 设置新的校验器
    *
@@ -80,14 +100,16 @@ export interface FormControl<T = any> {
   // TODO setParent: (control: AbstractControl) => void
   /* 设置表单项的错误信息 */
   setErrors: (errors: ValidateErrors | undefined) => void
+  /* 手动修改触发校验器的时机 */
+  setTrigger: (trigger: ValidateTrigger) => void
   /* 手动设置为 dirty 状态 */
   markAsDirty: () => void
   /* 手动设置为 blurred 状态 */
   markAsBlurred: () => void
   /* 设置当前项为禁用状态 */
-  disable: () => void
+  // TODO disable: () => void
   /* 设置当前项为可用状态 */
-  enable: () => void
+  // TODO enable: () => void
   /* 获取当前表单的根表单 */
   // TODO getRoot: () => AbstractControl
 }
