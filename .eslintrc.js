@@ -4,7 +4,13 @@ module.exports = {
     es2020: true,
     node: true,
   },
-  extends: ['plugin:react/recommended', 'standard', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'prettier',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -13,22 +19,5 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
-  rules: {},
-  overrides: [
-    {
-      files: ['*.ts', '*.tsx'],
-      rules: {
-        'no-use-before-define': 0,
-        '@typescript-eslint/no-use-before-define': [
-          2,
-          {
-            classes: true,
-            functions: false,
-            typedefs: false,
-          },
-        ],
-      },
-    },
-  ],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
 }

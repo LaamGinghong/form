@@ -28,6 +28,7 @@ export function compose(validators: Validator[]): Validator | undefined {
   if (!validators.length) {
     return undefined
   }
+
   return (value, control) =>
     mergeMessages(executeValidates(value, control, validators))
 }
@@ -38,6 +39,7 @@ export function composeAsync(
   if (!validators.length) {
     return undefined
   }
+
   return (value, control) =>
     Promise.all(executeValidates(value, control, validators)).then(
       mergeMessages,

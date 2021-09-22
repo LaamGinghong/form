@@ -1,5 +1,7 @@
-import type { FormControl, FormControlParams } from './types'
 import { useMemo, useRef, useState } from 'react'
+import { isNil } from 'lodash-es'
+import { useUpdateEffect } from 'ahooks'
+import type { FormControl, FormControlParams } from './types'
 import type {
   AsyncValidator,
   ValidateErrors,
@@ -8,8 +10,6 @@ import type {
   Validator,
 } from '../../validate'
 import { isOptions, toAsyncValidator, toValidator } from '../../validate'
-import { isNil } from 'lodash-es'
-import { useUpdateEffect } from 'ahooks'
 
 function useFormControl<T = any>({
   validatorOrOptions,
@@ -26,6 +26,7 @@ function useFormControl<T = any>({
     if (isOptions(validatorOrOptions)) {
       trigger = validatorOrOptions.trigger ?? trigger
     }
+
     return trigger
   })
 
@@ -34,6 +35,7 @@ function useFormControl<T = any>({
       if (isOptions(validatorOrOptions)) {
         return toValidator(validatorOrOptions.validators)
       }
+
       return toValidator(validatorOrOptions)
     })(),
   )
@@ -43,6 +45,7 @@ function useFormControl<T = any>({
       if (isOptions(validatorOrOptions)) {
         return toAsyncValidator(validatorOrOptions.asyncValidators)
       }
+
       return toAsyncValidator(asyncValidator)
     })(),
   )
@@ -73,6 +76,7 @@ function useFormControl<T = any>({
     if (trigger !== 'onChange') {
       return
     }
+
     validate()
   }, [value, trigger])
 
@@ -87,6 +91,7 @@ function useFormControl<T = any>({
       setStatus('validating')
       errors = await asyncValidators.current(value)
     }
+
     setErrors(errors)
     return errors
   }
