@@ -5,9 +5,15 @@ import type {
   ValidateTrigger,
   Validator,
   ValidatorOptions,
-} from '../../validate'
+} from '../validators'
 
-export interface FormControlParams<T> {
+export enum ControlType {
+  control,
+  group,
+  array,
+}
+
+export interface ControlParams {
   /**
    * 校验器
    *
@@ -19,18 +25,16 @@ export interface FormControlParams<T> {
    *
    * 若 validatorOrOptions 为 **ValidatorOptions**，则会忽略这个值
    */
-  asyncValidator?: AsyncValidator | AsyncValidator[]
-  /**
-   * 表单项的初始值
-   */
-  initialValue?: T | (() => T)
+  asyncValidators?: AsyncValidator | AsyncValidator[]
 }
 
-export interface FormControl<T> {
+export interface AbstractControl {
   /**
-   * 当前表单项的值
+   * @internal
+   *
+   * 代表当前 control 的类型
    */
-  value: T | undefined
+  TYPE: ControlType
   /**
    * 当前表单项的状态
    */
@@ -52,9 +56,11 @@ export interface FormControl<T> {
    */
   dirty: boolean
   /* 当前表单项是否被禁用 */
-  // TODO disabled: boolean
+  disabled: boolean
   /* 当前表单项的父表单 */
-  // TODO parent: AbstractControl | undefined
+  parent: AbstractControl | undefined
+  /* 当前表单项的根表单 */
+  root: AbstractControl | undefined
   /**
    * 触发表单校验的时机
    *
@@ -76,12 +82,12 @@ export interface FormControl<T> {
    * 这个行为并不会触发 dirty 和 blurred 的修改，因为并不是由 UI 发起的事件
    */
   clear: () => void
-  /**
-   * 手动触发 value 的修改
-   *
-   * 不会引起 dirty 的修改
-   */
-  setValue: (value: T | undefined, options?: { dirty?: boolean }) => void
+  /* 设置父表单项 */
+  setParent: (control: AbstractControl) => void
+  /* 设置表单项的错误信息 */
+  setErrors: (errors: ValidateErrors | undefined) => void
+  /* 手动修改触发校验器的时机 */
+  setTrigger: (trigger: ValidateTrigger) => void
   /**
    * 设置新的校验器
    *
@@ -96,20 +102,24 @@ export interface FormControl<T> {
   setAsyncValidator: (
     validator: AsyncValidator | AsyncValidator[] | undefined,
   ) => void
-  /* 设置父表单项 */
-  // TODO setParent: (control: AbstractControl) => void
-  /* 设置表单项的错误信息 */
-  setErrors: (errors: ValidateErrors | undefined) => void
-  /* 手动修改触发校验器的时机 */
-  setTrigger: (trigger: ValidateTrigger) => void
+  /**
+   * 合并新的校验器
+   *
+   * 注意：是 **合并**
+   */
+  patchValidator: (validator: Validator | Validator[]) => void
+  /**
+   * 合并新的异步校验器
+   *
+   * 注意：是 **合并**
+   */
+  patchAsyncValidator: (validator: AsyncValidator | AsyncValidator[]) => void
   /* 手动设置为 dirty 状态 */
   markAsDirty: () => void
   /* 手动设置为 blurred 状态 */
   markAsBlurred: () => void
   /* 设置当前项为禁用状态 */
-  // TODO disable: () => void
+  disable: () => void
   /* 设置当前项为可用状态 */
-  // TODO enable: () => void
-  /* 获取当前表单的根表单 */
-  // TODO getRoot: () => AbstractControl
+  enable: () => void
 }

@@ -5,6 +5,7 @@ import type {
   ValidatorOptions,
 } from './types'
 import { isArray, isNil, isPlainObject } from 'lodash-es'
+import { AbstractControl } from '../controls/types'
 
 export function isOptions(
   value?: Validator | Validator[] | ValidatorOptions,
@@ -46,11 +47,9 @@ export function composeAsync(
     )
 }
 
-export function executeValidates<T extends (value: any, control: any) => any>(
-  value: any,
-  control: any,
-  validators: T[],
-): ReturnType<T>[] {
+export function executeValidates<
+  T extends (value: any, control: AbstractControl) => any
+>(value: any, control: AbstractControl, validators: T[]): ReturnType<T>[] {
   return validators.map((validator) => validator(value, control))
 }
 

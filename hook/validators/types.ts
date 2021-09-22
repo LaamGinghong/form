@@ -1,4 +1,6 @@
 // Status
+import type { AbstractControl } from '../controls/types'
+
 /**
  * **valid**：校验已通过
  *
@@ -47,11 +49,11 @@ export type ValidateMessage = string | ValidateMessageFn
 // Function
 export type Validator = (
   value: any,
-  control?: any, // TODO
+  control: AbstractControl,
 ) => ValidateErrors | undefined
 export type AsyncValidator = (
   value: any,
-  control?: any, // TODO
+  control: AbstractControl,
 ) => Promise<ValidateErrors | undefined>
 export interface ValidatorOptions {
   validators?: Validator | Validator[]
