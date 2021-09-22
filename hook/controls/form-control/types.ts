@@ -1,7 +1,7 @@
 import type { AbstractControl, ControlParams } from '../types'
 
 export interface FormControlParams<
-  T extends Record<string, never>,
+  T extends Record<string, unknown>,
   K extends keyof T
 > extends ControlParams {
   /**
@@ -14,8 +14,10 @@ export interface FormControlParams<
   field: K
 }
 
-export interface FormControl<T extends Record<string, never>, K extends keyof T>
-  extends AbstractControl {
+export interface FormControl<
+  T extends Record<string, unknown>,
+  K extends keyof T
+> extends AbstractControl {
   /* 当前表单项的值 */
   value: T[K] | undefined
 

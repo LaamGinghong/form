@@ -12,12 +12,13 @@ import type {
 import { isOptions, toAsyncValidator, toValidator } from '../../validators'
 import { isArray, isNil } from 'lodash-es'
 
-function useFormControl<T extends Record<string, never>, K extends keyof T>({
+function useFormControl<T extends Record<string, unknown>, K extends keyof T>({
   initialValue,
   // field, TODO
   validatorOrOptions,
   asyncValidators,
 }: FormControlParams<T, K>): FormControl<T, K> {
+  /** @internal */
   const TYPE = ControlType.control
 
   const [value, setValue] = useState<T[K] | undefined>(initialValue)
@@ -85,6 +86,8 @@ function useFormControl<T extends Record<string, never>, K extends keyof T>({
       markAsBlurred,
       disable,
       enable,
+      getValue,
+      getAllValue,
     }),
     [value, status, errors, dirty, blurred, disabled, parent, root, trigger],
   )
@@ -174,6 +177,14 @@ function useFormControl<T extends Record<string, never>, K extends keyof T>({
   function enable(): void {
     setDisabled(false)
     // TODO parent.setControl
+  }
+
+  function getValue(): T[K] | undefined {
+    return getAllValue()
+  }
+
+  function getAllValue(): T[K] | undefined {
+    return value
   }
 
   /** @internal */

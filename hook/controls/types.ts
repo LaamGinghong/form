@@ -7,7 +7,7 @@ import type {
   ValidatorOptions,
 } from '../validators'
 
-export enum ControlType {
+export const enum ControlType {
   control,
   group,
   array,
@@ -28,7 +28,7 @@ export interface ControlParams {
   asyncValidators?: AsyncValidator | AsyncValidator[]
 }
 
-export interface AbstractControl {
+export interface AbstractControl<T = any> {
   /**
    * @internal
    *
@@ -122,4 +122,14 @@ export interface AbstractControl {
   disable: () => void
   /* 设置当前项为可用状态 */
   enable: () => void
+  /**
+   * 获取当前合法的 value
+   *
+   * 被禁用的字段会被过滤
+   *
+   * TODO formArray
+   */
+  getValue: (() => T | undefined) | (() => Partial<T>)
+  /* 获取当前所有 value */
+  getAllValue: () => T
 }
