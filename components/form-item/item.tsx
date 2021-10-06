@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react'
 import type { FormItemProps } from './types'
 
-function Item<T extends Record<string, any>, F = keyof T>({
-  label,
-  children
-}: FormItemProps<T, F>): ReactElement | null {
+function Item<
+  T extends Record<string, any> = Record<string, any>,
+  F = keyof T,
+>({ label, children }: FormItemProps<T, F>): ReactElement | null {
   return (
     <div className="form-item">
       <div className="form-item-label">{label}</div>
