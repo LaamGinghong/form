@@ -1,19 +1,20 @@
 {
-  "name": "form-hook",
+  "name": "form",
   "version": "0.0.0",
-  "description": "a react hook for form inspired by angular.",
+  "description": "a react form component with hook is inspired by @angular/form",
   "keywords": [
     "react",
+    "component",
     "hook",
     "form"
   ],
-  "homepage": "https://github.com/LaamGinghong/form-hook#readme",
+  "homepage": "https://github.com/LaamGinghong/form#readme",
   "bugs": {
-    "url": "https://github.com/LaamGinghong/form-hook/issues"
+    "url": "https://github.com/LaamGinghong/form/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LaamGinghong/form-hook.git"
+    "url": "git+https://github.com/LaamGinghong/form.git"
   },
   "license": "MIT",
   "author": "https://github.com/LaamGinghong",

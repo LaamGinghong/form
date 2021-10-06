@@ -1,5 +1,3 @@
-# FORM-HOOK
+# Form
 
-> A React hook for form inspired by Angular.
-
-
+> A React form component with hook is inspired by [@angular/form](https://github.com/angular/angular/blob/master/packages/forms/PACKAGE.md).
