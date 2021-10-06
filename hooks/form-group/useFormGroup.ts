@@ -1,97 +1,61 @@
-import type { FormGroup, FormGroupConfig, UseFormGroupOptions } from './types'
+import type { ControlsGroup, FormGroup, FormGroupConfig } from './types'
 import { useMemo, useState } from 'react'
-import type {
-  ValidateErrors,
-  ValidateStatus,
-  ValidateTrigger,
-} from '../../validators'
-import { isNil } from 'lodash-es'
-
-const DEFAULT_OPTIONS: Required<UseFormGroupOptions> = {
-  disabled: false,
-  trigger: 'onChange',
-}
+import type { ValidateTrigger } from '../../validators'
+import { AbstractControlType, useAbstractControl } from '../abstract-control'
+import type { FormControl } from '../form-control'
 
 function useFormGroup<T extends Record<string, any> = Record<string, any>>(
   config: FormGroupConfig<T>,
-  options: UseFormGroupOptions = DEFAULT_OPTIONS,
+  defaultTrigger: ValidateTrigger = 'onChange',
 ): FormGroup<T> {
-  const [status, setStatus] = useState<ValidateStatus>()
-  const [errors, setErrors] = useState<ValidateErrors>()
-  // update by form item changed
-  const [blurred, setBlurred] = useState(false)
-  // update by form item changed
-  const [dirty, setDirty] = useState(false)
-  const [disabled, setDisabled] = useState(!!options.disabled)
-  const [trigger, setTrigger] = useState<ValidateTrigger>(() => {
-    if (isNil(options.trigger)) {
-      return DEFAULT_OPTIONS.trigger
-    }
-    return options.trigger
+  const [controls, setControls] = useState({} as ControlsGroup<T>)
+  const abstractControl = useAbstractControl({
+    type: AbstractControlType.group,
+    defaultTrigger,
+    setValue,
+    getValue,
+    getControls,
   })
 
-  const formGroup = useMemo<FormGroup<T>>(
-    () => ({
-      status,
-      errors,
-      blurred,
-      dirty,
-      disabled,
-      trigger,
-      validate,
-      reset,
-      clear,
-      setTrigger,
-      setValidator,
-      setAsyncValidator,
-      patchValidator,
-      patchAsyncValidator,
-      markAsDirty,
-      markAsBlurred,
-      disable,
-      enable,
-      getValidValue,
-      getAllValue,
-      setValue,
-      patchValue,
-    }),
-    [status, errors, blurred, dirty, disabled, trigger],
-  )
+  function getControls(): [string, FormControl<T, any>][] {
+    return Object.entries(controls)
+  }
 
-  function validate(): Promise<ValidateErrors | undefined> {}
+  function getValue(): T {
+    return Object.entries(controls).reduce<T>((val, [key, con]) => {
+      const control = con as FormControl<T, any>
+      if (!control.disabled) {
+        ;(val as any)[key] = control.getValidValue()
+      }
+      return val
+    }, {} as T)
+  }
 
-  function reset(): void {}
-
-  function clear(): void {}
-
-  function setValidator(): void {}
-
-  function setAsyncValidator(): void {}
-
-  function patchValidator(): void {}
-
-  function patchAsyncValidator(): void {}
-
-  function markAsDirty(): void {}
-
-  function markAsBlurred(): void {}
-
-  function disable(): void {}
-
-  function enable(): void {}
-
-  function getValidValue(): Partial<T> {}
-
-  function getAllValue(): T {}
-
-  function setValue(): void {}
+  function setValue(value: T, options?: { dirty?: boolean }): void {
+    Object.entries(value).forEach(([key, val]) => {
+      ;((controls as any)[key] as FormControl<T, any>).setValue(val, options)
+    })
+  }
 
   function patchValue<Path extends string>(
-    path: Path,
+    field: Path,
     value: LodashGet<T, Path>,
-  ): void {}
+    options?: { dirty?: boolean },
+  ): void {
+    ;((controls as any)[field] as FormControl<T, any>).setValue(value, options)
+  }
 
-  return formGroup
+  function patchControl<Field extends keyof T>(
+    field: Field,
+    control: FormControl<T, Field>,
+  ): void {
+    setControls((prev) => Object.assign({}, prev, { [field]: control }))
+  }
+
+  return useMemo(
+    () => ({ ...abstractControl, controls, patchValue, patchControl }),
+    [abstractControl],
+  )
 }
 
 export default useFormGroup
