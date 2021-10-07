@@ -8,6 +8,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^4.31.2
   '@typescript-eslint/parser': ^4.31.2
   ahooks: ^2.10.9
+  classnames: ^2.3.1
   eslint: ^7.32.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-import: ^2.24.2
@@ -15,6 +16,7 @@ specifiers:
   eslint-plugin-react: ^7.26.0
   eslint-plugin-react-hooks: ^4.2.0
   husky: ^7.0.2
+  immer: ^9.0.6
   lint-staged: ^11.1.2
   lodash-es: ^4.17.21
   prettier: ^2.4.1
@@ -25,10 +27,12 @@ specifiers:
 
 dependencies:
   ahooks: 2.10.9_react@17.0.2
+  classnames: registry.nlark.com/classnames/2.3.1
+  immer: registry.nlark.com/immer/9.0.6
   lodash-es: 4.17.21
   react: 17.0.2
   rxjs: 7.3.0
-  use-immer: 0.6.0_react@17.0.2
+  use-immer: 0.6.0_immer@9.0.6+react@17.0.2
 
 devDependencies:
   '@commitlint/cli': 13.1.0
@@ -2714,12 +2718,13 @@ packages:
       punycode: 2.1.1
     dev: true
 
-  /use-immer/0.6.0_react@17.0.2:
+  /use-immer/0.6.0_immer@9.0.6+react@17.0.2:
     resolution: {integrity: sha512-dFGRfvWCqPDTOt/S431ETYTg6+uxbpb7A1pptufwXVzGJY3RlXr38+3wyLNpc6SbbmAKjWl6+EP6uW74fkEsXQ==}
     peerDependencies:
       immer: '>=2.0.0'
       react: ^16.8.0 || ^17.0.1
     dependencies:
+      immer: registry.nlark.com/immer/9.0.6
       react: 17.0.2
     dev: false
 
@@ -2819,3 +2824,15 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  registry.nlark.com/classnames/2.3.1:
+    resolution: {integrity: sha1-38+jiR4wbsHa0QXQ6I9EF7hTXo4=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/classnames/download/classnames-2.3.1.tgz}
+    name: classnames
+    version: 2.3.1
+    dev: false
+
+  registry.nlark.com/immer/9.0.6:
+    resolution: {integrity: sha1-epa/JnTQbIFD4yfL9zU5OI3fGnM=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/immer/download/immer-9.0.6.tgz}
+    name: immer
+    version: 9.0.6
+    dev: false

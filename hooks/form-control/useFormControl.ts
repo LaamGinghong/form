@@ -5,11 +5,17 @@ import { isNil } from 'lodash-es'
 
 function useFormControl<T extends Record<string, any>, K extends keyof T>({
   field,
+  initialValue,
+  validators,
+  asyncValidators,
 }: UseFormControlOptions<T, K>): FormControl<T, K> {
-  const [value, updateValue] = useState<T[K] | undefined>()
+  const [value, updateValue] = useState<T[K] | undefined>(initialValue)
 
   const abstractControl = useAbstractControl({
     type: AbstractControlType.control,
+    initialValue,
+    validators,
+    asyncValidators,
     defaultTrigger: 'onChange',
     defaultDisabled: false,
     setValue,
