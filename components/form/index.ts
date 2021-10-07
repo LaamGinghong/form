@@ -1,2 +1,2 @@
-export { default as Form } from './form'
+export { Form, FormContext } from './form'
 export * from './types'

@@ -1,8 +1,4 @@
-import type {
-  AsyncValidator,
-  Validator,
-  ValidatorOptions,
-} from '../../validators'
+import type { AsyncValidator, Validator } from '../../validators'
 import type { AbstractControl } from '../abstract-control'
 import type { FormControl } from '../form-control'
 
@@ -18,7 +14,6 @@ export type FormGroupConfigItem<V> =
   | V
   | [V]
   | [V, Validator | Validator[], (AsyncValidator | AsyncValidator[])?]
-  | [V, ValidatorOptions]
 
 export interface FormGroup<T extends Record<string, any>>
   extends AbstractControl {
@@ -26,6 +21,20 @@ export interface FormGroup<T extends Record<string, any>>
    * 子表单控制器
    */
   controls: ControlsGroup<T>
+  /**
+   * 获取初始值
+   */
+  getInitialValue: () => T
+  /**
+   * 获取每个 control 的控制器
+   */
+  getValidators: () => Record<
+    keyof T,
+    {
+      validators: Validator | Validator[] | undefined
+      asyncValidators: AsyncValidator | AsyncValidator[] | undefined
+    }
+  >
   /**
    * 获取当前合法的 value
    *

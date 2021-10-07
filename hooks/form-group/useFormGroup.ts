@@ -1,8 +1,13 @@
 import type { ControlsGroup, FormGroup, FormGroupConfig } from './types'
 import { useMemo, useState } from 'react'
-import type { ValidateTrigger } from '../../validators'
+import type {
+  AsyncValidator,
+  ValidateTrigger,
+  Validator,
+} from '../../validators'
 import { AbstractControlType, useAbstractControl } from '../abstract-control'
 import type { FormControl } from '../form-control'
+import { isArray } from 'lodash-es'
 
 function useFormGroup<T extends Record<string, any> = Record<string, any>>(
   config: FormGroupConfig<T>,
@@ -16,6 +21,46 @@ function useFormGroup<T extends Record<string, any> = Record<string, any>>(
     getValue,
     getControls,
   })
+
+  function getInitialValue(): T {
+    return Object.entries(config).reduce<T>((value, [key, current]) => {
+      let val: any
+      if (isArray(current)) {
+        val = current[0]
+      } else {
+        val = current
+      }
+      ;(value as any)[key] = val
+      return value
+    }, {} as T)
+  }
+
+  function getValidators(): Record<
+    keyof T,
+    {
+      validators: Validator | Validator[] | undefined
+      asyncValidators: AsyncValidator | AsyncValidator[] | undefined
+    }
+  > {
+    return Object.entries(config).reduce<ReturnType<typeof getValidators>>(
+      (config, [key, current]) => {
+        const options: {
+          validators: Validator | Validator[] | undefined
+          asyncValidators: AsyncValidator | AsyncValidator[] | undefined
+        } = {
+          validators: undefined,
+          asyncValidators: undefined,
+        }
+        if (isArray(current)) {
+          options.validators = current[1]
+          options.asyncValidators = current[2]
+        }
+        ;(config as any)[key] = options
+        return config
+      },
+      {} as ReturnType<typeof getValidators>,
+    )
+  }
 
   function getControls(): [string, FormControl<T, any>][] {
     return Object.entries(controls)
@@ -53,7 +98,14 @@ function useFormGroup<T extends Record<string, any> = Record<string, any>>(
   }
 
   return useMemo(
-    () => ({ ...abstractControl, controls, patchValue, patchControl }),
+    () => ({
+      ...abstractControl,
+      controls,
+      patchValue,
+      patchControl,
+      getInitialValue,
+      getValidators,
+    }),
     [abstractControl],
   )
 }
