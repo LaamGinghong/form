@@ -1,5 +1,5 @@
 // Status
-import type { AbstractControl } from '../controls/types'
+import { AbstractControl } from '../hooks/abstract-control'
 
 /**
  * **valid**：校验已通过
@@ -45,6 +45,8 @@ export type ValidateMessageFn = (
   error: Omit<ValidateError, 'message'>,
 ) => string
 export type ValidateMessage = string | ValidateMessageFn
+export type ValidateMessageGroup = Partial<Record<ValidateKey, ValidateMessage>>
+export type ValidateKey = 'required' | 'max' | 'min' | 'maxLength' | 'minLength'
 
 // Function
 export type Validator = (
@@ -55,9 +57,3 @@ export type AsyncValidator = (
   value: any,
   control: AbstractControl,
 ) => Promise<ValidateErrors | undefined>
-export interface ValidatorOptions {
-  validators?: Validator | Validator[]
-  asyncValidators?: AsyncValidator | AsyncValidator[]
-  trigger?: ValidateTrigger
-  disabled?: boolean
-}

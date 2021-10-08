@@ -1,17 +1,6 @@
-import type {
-  AsyncValidator,
-  ValidateErrors,
-  Validator,
-  ValidatorOptions,
-} from './types'
-import { isArray, isNil, isPlainObject } from 'lodash-es'
-import { AbstractControl } from '../controls/types'
-
-export function isOptions(
-  value?: Validator | Validator[] | ValidatorOptions,
-): value is ValidatorOptions {
-  return isPlainObject(value)
-}
+import type { AsyncValidator, ValidateErrors, Validator } from './types'
+import { isArray, isNil } from 'lodash-es'
+import { AbstractControl } from '../hooks/abstract-control'
 
 export function toValidator(
   validator?: Validator | Validator[],
@@ -48,7 +37,7 @@ export function composeAsync(
 }
 
 export function executeValidates<
-  T extends (value: any, control: AbstractControl) => any
+  T extends (value: any, control: AbstractControl) => any,
 >(value: any, control: AbstractControl, validators: T[]): ReturnType<T>[] {
   return validators.map((validator) => validator(value, control))
 }

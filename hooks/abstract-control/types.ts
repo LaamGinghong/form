@@ -4,37 +4,35 @@ import type {
   ValidateStatus,
   ValidateTrigger,
   Validator,
-  ValidatorOptions,
-} from '../validators'
+} from '../../validators'
+import type { FormControl } from '../form-control'
+import type { ControlsGroup } from '../form-group'
 
-export const enum ControlType {
+export const enum AbstractControlType {
   control,
   group,
-  array,
 }
 
-export interface ControlParams {
-  /**
-   * 校验器
-   *
-   * 可能是单个校验器，可能是数组，也可能是一个配置项
-   */
-  validatorOrOptions?: Validator | Validator[] | ValidatorOptions
-  /**
-   * 异步校验器
-   *
-   * 若 validatorOrOptions 为 **ValidatorOptions**，则会忽略这个值
-   */
+export interface UseAbstractControlOptions {
+  type: AbstractControlType
+  value?: any
+  controls?: ControlsGroup<any>
+  setValue: (value: any, options?: { dirty?: boolean }) => void
+  getValue: () => any
+  getControls: () => [string, FormControl<any, any>][]
+  initialValue?: any
+  defaultDisabled?: boolean
+  defaultTrigger?: ValidateTrigger
+  validators?: Validator | Validator[]
   asyncValidators?: AsyncValidator | AsyncValidator[]
 }
 
-export interface AbstractControl<T = any> {
+export interface AbstractControl {
   /**
-   * @internal
-   *
+   * @private
    * 代表当前 control 的类型
    */
-  TYPE: ControlType
+  type: AbstractControlType
   /**
    * 当前表单项的状态
    */
@@ -57,10 +55,7 @@ export interface AbstractControl<T = any> {
   dirty: boolean
   /* 当前表单项是否被禁用 */
   disabled: boolean
-  /* 当前表单项的父表单 */
-  parent: AbstractControl | undefined
-  /* 当前表单项的根表单 */
-  root: AbstractControl | undefined
+  //  TODO parent root
   /**
    * 触发表单校验的时机
    *
@@ -82,10 +77,6 @@ export interface AbstractControl<T = any> {
    * 这个行为并不会触发 dirty 和 blurred 的修改，因为并不是由 UI 发起的事件
    */
   clear: () => void
-  /* 设置父表单项 */
-  setParent: (control: AbstractControl) => void
-  /* 设置表单项的错误信息 */
-  setErrors: (errors: ValidateErrors | undefined) => void
   /* 手动修改触发校验器的时机 */
   setTrigger: (trigger: ValidateTrigger) => void
   /**
@@ -116,8 +107,12 @@ export interface AbstractControl<T = any> {
   patchAsyncValidator: (validator: AsyncValidator | AsyncValidator[]) => void
   /* 手动设置为 dirty 状态 */
   markAsDirty: () => void
+  /* 手动设置为非 dirty 状态 */
+  markAsUnDirty: () => void
   /* 手动设置为 blurred 状态 */
   markAsBlurred: () => void
+  /* 手动设置为 unblurred 状态 */
+  markAsUnBlurred: () => void
   /* 设置当前项为禁用状态 */
   disable: () => void
   /* 设置当前项为可用状态 */
@@ -125,11 +120,12 @@ export interface AbstractControl<T = any> {
   /**
    * 获取当前合法的 value
    *
-   * 被禁用的字段会被过滤
+   * 被禁用和不合法的字段会被过滤
    *
-   * TODO formArray
    */
-  getValue: (() => T | undefined) | (() => Partial<T>)
+  getValidValue: () => any
   /* 获取当前所有 value */
-  getAllValue: () => T
+  getAllValue: () => any
+  /* 替换表单的值 */
+  setValue: (value: any) => void
 }
