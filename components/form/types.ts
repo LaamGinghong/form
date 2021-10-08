@@ -1,5 +1,9 @@
 import type { FormControl, FormGroup } from '../../hooks'
-import type { AsyncValidator, Validator } from '../../validators'
+import type {
+  AsyncValidator,
+  ValidateTrigger,
+  Validator,
+} from '../../validators'
 
 export interface FormProps<T extends Record<string, any>> {
   /**
@@ -25,6 +29,7 @@ export interface FormContextValue {
       asyncValidators: AsyncValidator | AsyncValidator[] | undefined
     }
   >
+  trigger: ValidateTrigger
   addControl: (field: string, control: FormControl<any, any>) => void
   removeControl: (field: string) => void
 }

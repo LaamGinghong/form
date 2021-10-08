@@ -6,6 +6,7 @@ import { createContext } from 'react'
 export const FormContext = createContext<FormContextValue>({
   initialValues: {},
   configuration: {},
+  trigger: 'onChange',
   addControl: noop,
   removeControl: noop,
 })
@@ -30,6 +31,7 @@ export function Form<T extends Record<string, any> = Record<string, any>>({
       value={{
         initialValues: control.getInitialValue(),
         configuration: control.getValidators(),
+        trigger: control.trigger,
         addControl: control.patchControl,
         removeControl: control.removeControl,
       }}

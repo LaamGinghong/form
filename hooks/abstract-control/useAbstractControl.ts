@@ -86,10 +86,10 @@ function useAbstractControl({
       const errors = await Promise.all(
         getControls().map(([, control]) => control.validate()),
       )
-      if (errors.every(Boolean)) {
+      if (errors.every((error) => !error)) {
         return undefined
       }
-      const keys = Object.keys(getControls())
+      const keys = getControls().map(([key]) => key)
       return keys.reduce<ValidateErrors>((errs, key, index) => {
         errs[key] = errors[index]!
         return errs

@@ -45,6 +45,8 @@ export type ValidateMessageFn = (
   error: Omit<ValidateError, 'message'>,
 ) => string
 export type ValidateMessage = string | ValidateMessageFn
+export type ValidateMessageGroup = Partial<Record<ValidateKey, ValidateMessage>>
+export type ValidateKey = 'required' | 'max' | 'min' | 'maxLength' | 'minLength'
 
 // Function
 export type Validator = (

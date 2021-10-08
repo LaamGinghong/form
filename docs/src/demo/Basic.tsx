@@ -2,29 +2,38 @@ import type { VFC } from 'react'
 import { Button, Input, Typography } from 'antd'
 import { Form, FormItem } from '../../../components'
 import { useFormGroup } from '../../../hooks'
+import { required } from '../../../validators'
 
 const Basic: VFC = () => {
   const control = useFormGroup({
-    name: [''],
-    password: [''],
+    name: ['', [required]],
+    password: ['', [required]],
   })
 
-  const handleSubmit = () => {
-    console.log(control.getAllValue())
+  const handleSubmit = (value: unknown) => {
+    console.log(value)
   }
 
   return (
     <Typography>
       <Typography.Title level={3}>Basic</Typography.Title>
-      <Form control={control}>
-        <FormItem field="name" label="Name">
+      <Form control={control} onSubmit={handleSubmit}>
+        <FormItem
+          field="name"
+          label="Name"
+          messages={{ required: 'Name is required' }}
+        >
           <Input />
         </FormItem>
-        <FormItem field="password" label="Password">
+        <FormItem
+          field="password"
+          label="Password"
+          messages={{ required: 'Password is required' }}
+        >
           <Input type="password" />
         </FormItem>
         <div>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button htmlType="submit">Submit</Button>
         </div>
       </Form>
     </Typography>
