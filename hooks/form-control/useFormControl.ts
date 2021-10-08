@@ -13,6 +13,7 @@ function useFormControl<T extends Record<string, any>, K extends keyof T>({
 
   const abstractControl = useAbstractControl({
     type: AbstractControlType.control,
+    value,
     initialValue,
     validators,
     asyncValidators,

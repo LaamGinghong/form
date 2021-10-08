@@ -14,8 +14,10 @@ function useFormGroup<T extends Record<string, any> = Record<string, any>>(
   defaultTrigger: ValidateTrigger = 'onChange',
 ): FormGroup<T> {
   const [controls, setControls] = useState({} as ControlsGroup<T>)
+
   const abstractControl = useAbstractControl({
     type: AbstractControlType.group,
+    controls,
     defaultTrigger,
     setValue,
     getValue,
@@ -67,10 +69,10 @@ function useFormGroup<T extends Record<string, any> = Record<string, any>>(
   }
 
   function getValue(): T {
-    return Object.entries(controls).reduce<T>((val, [key, con]) => {
+    return Object.entries(controls).reduce<T>((val, [, con]) => {
       const control = con as FormControl<T, any>
       if (!control.disabled) {
-        ;(val as any)[key] = control.getValidValue()
+        return Object.assign(val, control.getValidValue())
       }
       return val
     }, {} as T)
@@ -97,16 +99,24 @@ function useFormGroup<T extends Record<string, any> = Record<string, any>>(
     setControls((prev) => Object.assign({}, prev, { [field]: control }))
   }
 
+  function removeControl<Field extends keyof T>(field: Field): void {
+    setControls((prev) => {
+      Reflect.deleteProperty(prev, field)
+      return Object.assign({}, prev)
+    })
+  }
+
   return useMemo(
     () => ({
       ...abstractControl,
       controls,
       patchValue,
       patchControl,
+      removeControl,
       getInitialValue,
       getValidators,
     }),
-    [abstractControl],
+    [abstractControl, controls],
   )
 }
 

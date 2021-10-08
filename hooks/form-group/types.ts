@@ -57,4 +57,6 @@ export interface FormGroup<T extends Record<string, any>>
     field: Field,
     control: FormControl<T, Field>,
   ) => void
+  /** 移除子表单控制器 */
+  removeControl: <Field extends keyof T>(field: Field) => void
 }

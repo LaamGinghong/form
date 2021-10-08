@@ -5,7 +5,8 @@ import type {
   ValidateTrigger,
   Validator,
 } from '../../validators'
-import { FormControl } from '../form-control'
+import type { FormControl } from '../form-control'
+import type { ControlsGroup } from '../form-group'
 
 export const enum AbstractControlType {
   control,
@@ -14,6 +15,8 @@ export const enum AbstractControlType {
 
 export interface UseAbstractControlOptions {
   type: AbstractControlType
+  value?: any
+  controls?: ControlsGroup<any>
   setValue: (value: any, options?: { dirty?: boolean }) => void
   getValue: () => any
   getControls: () => [string, FormControl<any, any>][]

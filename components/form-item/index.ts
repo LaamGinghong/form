@@ -1,2 +1,2 @@
-export { default as FormItem } from './item'
+export { default as FormItem } from './Item'
 export * from './types'

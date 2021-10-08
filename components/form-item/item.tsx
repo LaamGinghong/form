@@ -1,16 +1,18 @@
-import type { ReactElement, ReactNode } from 'react'
+import type { ChangeEvent, ReactElement, ReactNode } from 'react'
 import type { FormItemProps } from './types'
 import { FormContext } from '../form'
 import { Children, cloneElement, useContext, useMemo } from 'react'
 import type { AsyncValidator, Validator } from '../../validators'
 import { useFormControl } from '../../hooks'
 import classNames from 'classnames'
+import { useMount, useUnmount } from 'ahooks'
 
 function Item<
   T extends Record<string, any> = Record<string, any>,
-  F extends keyof T = keyof T
+  F extends keyof T = keyof T,
 >({ label, children, field }: FormItemProps<T, F>): ReactElement | null {
-  const { initialValues, configuration } = useContext(FormContext)
+  const { initialValues, configuration, addControl, removeControl } =
+    useContext(FormContext)
 
   const initialValue = (initialValues as any)[field] as T[F]
 
@@ -25,6 +27,10 @@ function Item<
     validators,
     asyncValidators,
   })
+
+  const value = useMemo(() => {
+    return formControl.getAllValue()
+  }, [formControl])
 
   const statusElement = useMemo<ReactNode>(() => {
     if (!formControl.errors) {
@@ -41,8 +47,16 @@ function Item<
     )
   }, [formControl.errors, formControl.status])
 
-  const handleChange = (event: Event) => {
-    console.log(event)
+  useMount(() => {
+    addControl(field as string, formControl)
+  })
+
+  useUnmount(() => {
+    removeControl(field as string)
+  })
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    formControl.setValue(event.target.value as T[F])
   }
 
   const formItemElement = useMemo<ReactNode>(() => {
@@ -50,7 +64,7 @@ function Item<
       return null
     }
     return cloneElement(children, {
-      value: formControl.getAllValue(),
+      value,
       onChange: handleChange,
     })
   }, [children, formControl.getAllValue()])

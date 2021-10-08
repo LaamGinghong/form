@@ -1,2 +1,2 @@
-export { Form, FormContext } from './form'
+export { Form, FormContext } from './Form'
 export * from './types'

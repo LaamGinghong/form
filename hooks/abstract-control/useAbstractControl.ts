@@ -13,6 +13,8 @@ import { isArray, isNil } from 'lodash-es'
 
 function useAbstractControl({
   getValue,
+  value,
+  controls,
   getControls,
   defaultDisabled = false,
   defaultTrigger = 'onChange',
@@ -58,7 +60,7 @@ function useAbstractControl({
       getValidValue,
       setValue,
     }),
-    [status, errors, blurred, dirty, disabled, trigger],
+    [value, controls, status, errors, blurred, dirty, disabled, trigger],
   )
 
   const validator = useRef<Validator | undefined>(
